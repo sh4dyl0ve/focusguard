@@ -8,6 +8,20 @@ FocusGuard is my attempt to put a little friction between my current self and th
 
 The default restricted game is Dota 2, AppID `570`, but any Steam AppID can be added.
 
+## Screenshots
+
+### Dashboard
+
+![FocusGuard dashboard](docs/screenshots/dashboard.jpg)
+
+### Settings
+
+![FocusGuard settings](docs/screenshots/settings.jpg)
+
+### Activity and blocking log
+
+![FocusGuard activity log](docs/screenshots/activity-blocking.jpg)
+
 ## Download
 
 Download the latest Windows build from the GitHub Releases page:
