@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\FocusGuard\Services\ISteamPathDetectionService.cs" Link="Services\ISteamPathDetectionService.cs" />
+    <Compile Include="..\FocusGuard\Services\SteamDetectionService.cs" Link="Services\SteamDetectionService.cs" />
+    <Compile Include="..\FocusGuard\Models\GameStatus.cs" Link="Models\GameStatus.cs" />
+    <Compile Include="..\FocusGuard\Models\SteamCleanupOptions.cs" Link="Models\SteamCleanupOptions.cs" />
+    <Compile Include="..\FocusGuard\Models\SteamCleanupResult.cs" Link="Models\SteamCleanupResult.cs" />
+    <Compile Include="..\FocusGuard\Models\SteamGameState.cs" Link="Models\SteamGameState.cs" />
+  </ItemGroup>
+</Project>

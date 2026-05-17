@@ -1,0 +1,1107 @@
+<Window x:Class="FocusGuard.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="FocusGuard"
+        Width="1280"
+        Height="820"
+        MinWidth="1120"
+        MinHeight="720"
+        Icon="/Assets/FocusGuard.ico"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="CanResize">
+    <Window.Resources>
+        <Style x:Key="PagePanel" TargetType="Grid">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="{StaticResource AppBackgroundBrush}">
+        <Ellipse Width="520"
+                 Height="520"
+                 Fill="#1279E85F"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 Margin="220,-260,0,0">
+            <Ellipse.Effect>
+                <BlurEffect Radius="110" />
+            </Ellipse.Effect>
+        </Ellipse>
+        <Ellipse Width="620"
+                 Height="620"
+                 Fill="#104FA0FF"
+                 HorizontalAlignment="Right"
+                 VerticalAlignment="Bottom"
+                 Margin="0,0,-260,-260">
+            <Ellipse.Effect>
+                <BlurEffect Radius="140" />
+            </Ellipse.Effect>
+        </Ellipse>
+
+        <Border Background="#79000000" />
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Background="#3B07111F"
+                    BorderBrush="#18FFFFFF"
+                    BorderThickness="0,0,0,1"
+                    MouseLeftButtonDown="TitleBar_OnMouseLeftButtonDown">
+                <Grid Margin="24,0,14,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE83D;"
+                                   Style="{StaticResource IconText}"
+                                   Foreground="{StaticResource AccentStrongBrush}"
+                                   FontSize="18"
+                                   Margin="0,0,10,0" />
+                        <TextBlock Text="FocusGuard"
+                                   FontSize="17"
+                                   FontWeight="SemiBold" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center">
+                        <Button Content="&#xE921;"
+                                FontFamily="Segoe MDL2 Assets"
+                                Style="{StaticResource WindowChromeButton}"
+                                Click="MinimizeButton_OnClick" />
+                        <Button x:Name="MaximizeRestoreButton"
+                                Content="&#xE922;"
+                                FontFamily="Segoe MDL2 Assets"
+                                Style="{StaticResource WindowChromeButton}"
+                                Click="MaximizeRestoreButton_OnClick" />
+                        <Button Content="&#xE8BB;"
+                                FontFamily="Segoe MDL2 Assets"
+                                Style="{StaticResource WindowChromeButton}"
+                                Click="CloseButton_OnClick" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="252" />
+                    <ColumnDefinition Width="*" MinWidth="520" />
+                    <ColumnDefinition Width="300" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"
+                        Background="#A807111F"
+                        BorderBrush="#22FFFFFF"
+                        BorderThickness="0,0,1,0"
+                        Padding="26,34">
+                    <DockPanel LastChildFill="True">
+                        <StackPanel DockPanel.Dock="Top">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,36">
+                                <Grid Width="58" Height="58">
+                                    <Ellipse Fill="#1C79E85F" />
+                                    <Path Data="M29,7 L49,15 L49,31 C49,43 39,51 29,55 C19,51 9,43 9,31 L9,15 Z"
+                                          Stroke="{StaticResource AccentStrongBrush}"
+                                          StrokeThickness="3"
+                                          Fill="#1425361E" />
+                                    <Path Data="M22,30 L27,35 L37,23"
+                                          Stroke="{StaticResource AccentStrongBrush}"
+                                          StrokeThickness="4"
+                                          StrokeStartLineCap="Round"
+                                          StrokeEndLineCap="Round" />
+                                </Grid>
+                                <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="FocusGuard"
+                                               FontSize="24"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="{DynamicResource App.SidebarSubtitle}"
+                                               Style="{StaticResource MutedText}" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <Button Command="{Binding SelectDashboardCommand}" Style="{StaticResource NavButton}">
+                                <Grid>
+                                    <Border Width="3"
+                                            HorizontalAlignment="Left"
+                                            Background="{StaticResource AccentStrongBrush}"
+                                            CornerRadius="2"
+                                            Margin="-18,8,0,8">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsDashboardSelected}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                    </Border>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE80F;"
+                                                   Style="{StaticResource IconText}"
+                                                   Foreground="{StaticResource AccentStrongBrush}"
+                                                   Margin="0,0,16,0" />
+                                        <TextBlock Text="{DynamicResource Nav.Dashboard}"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+
+                            <Button Command="{Binding SelectActivityCommand}" Style="{StaticResource NavButton}">
+                                <Grid>
+                                    <Border Width="3"
+                                            HorizontalAlignment="Left"
+                                            Background="{StaticResource AccentStrongBrush}"
+                                            CornerRadius="2"
+                                            Margin="-18,8,0,8">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActivitySelected}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                    </Border>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE121;"
+                                                   Style="{StaticResource IconText}"
+                                                   Margin="0,0,16,0" />
+                                        <TextBlock Text="{DynamicResource Nav.Activity}" FontSize="16" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+
+                            <Button Command="{Binding SelectSettingsCommand}" Style="{StaticResource NavButton}">
+                                <Grid>
+                                    <Border Width="3"
+                                            HorizontalAlignment="Left"
+                                            Background="{StaticResource AccentStrongBrush}"
+                                            CornerRadius="2"
+                                            Margin="-18,8,0,8">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSettingsSelected}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                    </Border>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE713;"
+                                                   Style="{StaticResource IconText}"
+                                                   Margin="0,0,16,0" />
+                                        <TextBlock Text="{DynamicResource Nav.Settings}" FontSize="16" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel DockPanel.Dock="Bottom">
+                            <Border Style="{StaticResource Card}"
+                                    Padding="0"
+                                    CornerRadius="24"
+                                    Height="300"
+                                    ClipToBounds="True"
+                                    Margin="0,0,0,24">
+                                <Grid>
+                                    <Border>
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                <GradientStop Color="#1B253526" Offset="0" />
+                                                <GradientStop Color="#0E172313" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                    </Border>
+                                    <StackPanel Margin="22,28,22,0" Panel.ZIndex="2">
+                                        <TextBlock Text="{DynamicResource Sidebar.MotivationTitle}"
+                                                   Foreground="{StaticResource AccentStrongBrush}"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"
+                                                   TextAlignment="Center" />
+                                        <TextBlock Text="{DynamicResource Sidebar.MotivationSubtitle}"
+                                                   Style="{StaticResource MutedText}"
+                                                   TextAlignment="Center"
+                                                   Margin="0,12,0,0" />
+                                    </StackPanel>
+                                    <Viewbox Stretch="UniformToFill"
+                                             VerticalAlignment="Bottom"
+                                             Height="170"
+                                             Margin="0,0,0,-8">
+                                        <Canvas Width="260" Height="170">
+                                            <Path Data="M0,132 C22,118 42,116 64,128 C88,96 112,78 136,66 C162,86 178,106 196,132 C222,120 242,124 260,138 L260,170 L0,170 Z"
+                                                  Fill="#1E3F2E" />
+                                            <Path Data="M26,170 L96,72 C108,88 122,104 138,128 L168,170 Z"
+                                                  Fill="#4D7D5A" />
+                                            <Path Data="M80,170 L160,42 C182,82 206,120 238,170 Z"
+                                                  Fill="#315F43" />
+                                            <Path Data="M96,72 L118,102 L105,94 L94,120 L80,170 L26,170 Z"
+                                                  Fill="#74A75F" />
+                                            <Path Data="M160,42 L178,82 L165,74 L150,108 L126,170 L80,170 Z"
+                                                  Fill="#5E914F" />
+                                            <Path Data="M0,150 C32,138 60,140 86,154 C118,138 150,136 184,154 C212,140 236,142 260,152 L260,170 L0,170 Z"
+                                                  Fill="#173225" />
+                                            <Path Data="M160,45 L160,79"
+                                                  Stroke="#F8B84E"
+                                                  StrokeThickness="3"
+                                                  StrokeStartLineCap="Round" />
+                                            <Path Data="M162,47 L188,55 L162,65 Z"
+                                                  Fill="#F8B84E" />
+                                        </Canvas>
+                                    </Viewbox>
+                                </Grid>
+                            </Border>
+
+                            <StackPanel Orientation="Horizontal" Margin="6,0,0,0">
+                                <TextBlock Text="&#xE708;"
+                                           Style="{StaticResource IconText}"
+                                           FontSize="22"
+                                           Margin="0,0,14,0" />
+                                <StackPanel>
+                                    <TextBlock Text="{DynamicResource Sidebar.BackgroundMode}" Style="{StaticResource MutedText}" />
+                                    <TextBlock Text="{DynamicResource Sidebar.Enabled}"
+                                               Foreground="{StaticResource MainTextBrush}"
+                                               FontWeight="SemiBold" />
+                                </StackPanel>
+                                <Ellipse Width="8"
+                                         Height="8"
+                                         Fill="{StaticResource AccentStrongBrush}"
+                                         VerticalAlignment="Bottom"
+                                         Margin="8,0,0,7" />
+                            </StackPanel>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+
+                <ScrollViewer Grid.Column="1"
+                              VerticalScrollBarVisibility="Auto"
+                              Padding="30,30,14,24">
+                    <StackPanel>
+                        <Border Background="#B73D2F18"
+                                BorderBrush="#99F8B84E"
+                                BorderThickness="1"
+                                CornerRadius="18"
+                                Padding="16"
+                                Margin="0,0,0,20">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasUserMessage}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE7BA;"
+                                           Style="{StaticResource IconText}"
+                                           Foreground="{StaticResource WarningBrush}"
+                                           Margin="0,0,12,0" />
+                                <TextBlock Text="{Binding UserMessage}" />
+                            </StackPanel>
+                        </Border>
+
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid" BasedOn="{StaticResource PagePanel}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDashboardSelected}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <StackPanel>
+                                <StackPanel Margin="10,0,0,28">
+                                    <TextBlock FontSize="18" FontWeight="Medium">
+                                        <Run Text="{DynamicResource Dashboard.GreetingLead}" />
+                                        <Run Text="{DynamicResource Dashboard.GreetingAccent}" Foreground="{StaticResource AccentStrongBrush}" />
+                                        <Run Text="  ⚡" Foreground="{StaticResource WarningBrush}" />
+                                    </TextBlock>
+                                    <TextBlock Text="{DynamicResource Dashboard.SupportiveText}"
+                                               Style="{StaticResource MutedText}"
+                                               Margin="0,8,0,0" />
+                                </StackPanel>
+
+                                <Border Style="{StaticResource HeroCard}" Margin="0,0,0,18">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="112" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Viewbox Width="88"
+                                                 Height="88"
+                                                 Margin="0,0,24,0"
+                                                 VerticalAlignment="Center">
+                                            <Grid Width="100" Height="100">
+                                            <Ellipse Fill="#1879E85F" />
+                                            <Path Data="M50,11 L84,25 L84,52 C84,72 69,88 50,96 C31,88 16,72 16,52 L16,25 Z"
+                                                  Stroke="#A879E85F"
+                                                  StrokeThickness="5"
+                                                  Fill="#2A79E85F" />
+                                            <Path Data="M36,54 L47,65 L68,42"
+                                                  Stroke="#07111F"
+                                                  StrokeThickness="7"
+                                                  StrokeStartLineCap="Round"
+                                                  StrokeEndLineCap="Round" />
+                                            </Grid>
+                                        </Viewbox>
+
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding HeroProtectionStatusText}"
+                                                       FontSize="36"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{StaticResource AccentStrongBrush}"
+                                                       LineHeight="44" />
+                                            <TextBlock Text="{Binding HeroRestrictedGameText}"
+                                                       FontSize="15"
+                                                       Margin="0,14,0,0" />
+                                            <TextBlock Text="{Binding HeroProtectionDetail}"
+                                                       Style="{StaticResource MutedText}"
+                                                       Margin="0,6,0,0" />
+
+                                            <WrapPanel Margin="0,28,0,0">
+                                                <Button Command="{Binding PauseProtectionCommand}"
+                                                        Style="{StaticResource SecondaryButton}"
+                                                        MinWidth="154"
+                                                        Content="{Binding PauseProtectionActionText}" />
+                                                <Button Command="{Binding DisableProtectionCommand}"
+                                                        Style="{StaticResource DangerButton}"
+                                                        MinWidth="184"
+                                                        Margin="12,0,0,0">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="&#xE72E;"
+                                                                   Style="{StaticResource IconText}"
+                                                                   Foreground="#FF8C8C"
+                                                                   Margin="0,0,10,0" />
+                                                        <TextBlock Text="{DynamicResource Dashboard.DisableProtection}" />
+                                                    </StackPanel>
+                                                </Button>
+                                            </WrapPanel>
+                                        </StackPanel>
+
+                                        <Path Grid.Column="2"
+                                              Data="M54,74 L54,50 C54,27 70,11 92,11 C114,11 130,27 130,50 L130,74 L139,74 C147,74 154,81 154,89 L154,136 C154,145 147,152 139,152 L45,152 C36,152 29,145 29,136 L29,89 C29,81 36,74 45,74 Z M74,74 L110,74 L110,50 C110,38 103,30 92,30 C81,30 74,38 74,50 Z"
+                                              Fill="#1679E85F"
+                                              Stretch="Uniform"
+                                              Opacity="0.35"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                                    </Grid>
+                                </Border>
+
+                                <Border Style="{StaticResource Card}" Margin="0,0,0,18">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                            <TextBlock Text="&#xE7FC;"
+                                                       Style="{StaticResource IconText}"
+                                                       Margin="0,0,10,0" />
+                                            <TextBlock Text="{DynamicResource Dashboard.RestrictedGames}" Style="{StaticResource CardTitle}" />
+                                        </StackPanel>
+
+                                        <ItemsControl ItemsSource="{Binding Games}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#7A16202C"
+                                                            BorderBrush="#24FFFFFF"
+                                                            BorderThickness="1"
+                                                            CornerRadius="18"
+                                                            Padding="14"
+                                                            Margin="0,0,0,10">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <Border Width="82"
+                                                                    Height="82"
+                                                                    Background="#B72A1712"
+                                                                    CornerRadius="18"
+                                                                    Margin="0,0,20,0">
+                                                                <Grid>
+                                                                    <TextBlock Text="D"
+                                                                               Foreground="#D63C26"
+                                                                               FontSize="46"
+                                                                               FontWeight="Black"
+                                                                               HorizontalAlignment="Center"
+                                                                               VerticalAlignment="Center" />
+                                                                    <Path Data="M14,16 L68,66 M68,16 L14,66"
+                                                                          Stroke="#C92D20"
+                                                                          StrokeThickness="9"
+                                                                          StrokeStartLineCap="Round"
+                                                                          StrokeEndLineCap="Round" />
+                                                                </Grid>
+                                                            </Border>
+
+                                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding Name}"
+                                                                           FontSize="20"
+                                                                           FontWeight="SemiBold" />
+                                                                <TextBlock Text="{Binding AppId, StringFormat=AppID: {0}}"
+                                                                           Style="{StaticResource MutedText}"
+                                                                           Margin="0,5,0,0" />
+                                                            </StackPanel>
+
+                                                            <StackPanel Grid.Column="2"
+                                                                        Orientation="Horizontal"
+                                                                        VerticalAlignment="Center">
+                                                                <Border Style="{StaticResource StatusBadge}" MinWidth="178">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="&#xE83D;"
+                                                                                   Style="{StaticResource IconText}"
+                                                                                   Foreground="{StaticResource AccentStrongBrush}"
+                                                                                   FontSize="18"
+                                                                                   Margin="0,0,10,0" />
+                                                                        <StackPanel>
+                                                                            <TextBlock Text="{Binding StatusText}"
+                                                                                       Foreground="{StaticResource AccentStrongBrush}"
+                                                                                       FontWeight="SemiBold" />
+                                                                            <TextBlock Text="{DynamicResource Dashboard.InstallAttemptsBlocked}"
+                                                                                       Style="{StaticResource TertiaryText}"
+                                                                                       FontSize="11" />
+                                                                        </StackPanel>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                                <Button Command="{Binding DataContext.CancelInstallationCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                        CommandParameter="{Binding}"
+                                                                        Style="{StaticResource GhostButton}"
+                                                                        Content="&#xE76C;"
+                                                                        FontFamily="Segoe MDL2 Assets"
+                                                                        FontSize="18"
+                                                                        Margin="10,0,0,0" />
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <Button Command="{Binding SelectSettingsCommand}"
+                                                Style="{StaticResource GhostButton}"
+                                                HorizontalContentAlignment="Stretch"
+                                                Margin="0,2,0,0">
+                                            <Border BorderBrush="#2FFFFFFF"
+                                                    BorderThickness="1"
+                                                    CornerRadius="18"
+                                                    Padding="18">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                    <TextBlock Text="+"
+                                                               FontSize="28"
+                                                               Foreground="{StaticResource MutedTextBrush}"
+                                                               Margin="0,0,18,0" />
+                                                    <TextBlock Text="{DynamicResource Dashboard.AddGameByAppId}"
+                                                               Foreground="{StaticResource MutedTextBrush}"
+                                                               FontSize="15"
+                                                               VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </Border>
+                                        </Button>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource Card}">
+                                    <StackPanel>
+                                        <DockPanel Margin="0,0,0,18">
+                                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                                <TextBlock Text="&#xE81C;"
+                                                           Style="{StaticResource IconText}"
+                                                           Margin="0,0,10,0" />
+                                                <TextBlock Text="{DynamicResource Dashboard.RecentActivity}" Style="{StaticResource CardTitle}" />
+                                            </StackPanel>
+                                            <Button Content="{DynamicResource Dashboard.ViewAll}"
+                                                    DockPanel.Dock="Right"
+                                                    Command="{Binding SelectActivityCommand}"
+                                                    Style="{StaticResource GhostButton}"
+                                                    Foreground="{StaticResource AccentStrongBrush}" />
+                                        </DockPanel>
+
+                                        <ListBox ItemsSource="{Binding ActivityLog}"
+                                                 MaxHeight="280"
+                                                 PreviewMouseWheel="ScrollableContent_OnPreviewMouseWheel"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="Transparent"
+                                                            BorderBrush="#16FFFFFF"
+                                                            BorderThickness="0,0,0,1"
+                                                            Padding="4,10">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="42" />
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="78" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Border Width="32"
+                                                                    Height="32"
+                                                                    CornerRadius="16"
+                                                                    Background="#2279E85F">
+                                                                <TextBlock Text="&#xE83D;"
+                                                                           Style="{StaticResource IconText}"
+                                                                           Foreground="{StaticResource AccentStrongBrush}"
+                                                                           HorizontalAlignment="Center"
+                                                                           VerticalAlignment="Center" />
+                                                            </Border>
+                                                            <StackPanel Grid.Column="1">
+                                                                <TextBlock Text="{Binding Message}"
+                                                                           FontWeight="SemiBold"
+                                                                           TextTrimming="CharacterEllipsis" />
+                                                                <TextBlock Text="{DynamicResource Logs.ActivityEvent}"
+                                                                           Style="{StaticResource TertiaryText}" />
+                                                            </StackPanel>
+                                                            <TextBlock Grid.Column="2"
+                                                                       Text="{Binding Timestamp, StringFormat={}{0:HH:mm:ss}}"
+                                                                       Style="{StaticResource MutedText}"
+                                                                       HorizontalAlignment="Right"
+                                                                       VerticalAlignment="Center" />
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+
+                                        <TextBlock Text="{DynamicResource Logs.EmptyInline}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource MutedText}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HasActivityLogs}" Value="False">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid" BasedOn="{StaticResource PagePanel}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSettingsSelected}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource Nav.Settings}" Style="{StaticResource SectionTitle}" />
+                                <TextBlock Text="{DynamicResource Settings.Subtitle}"
+                                           Style="{StaticResource MutedText}"
+                                           Margin="0,8,0,24" />
+
+                                <Border Style="{StaticResource Card}" Margin="0,0,0,18">
+                                    <StackPanel>
+                                        <TextBlock Text="{DynamicResource Settings.SteamLocation}" Style="{StaticResource CardTitle}" />
+                                        <Grid Margin="0,16,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="{Binding SteamPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Button Grid.Column="1"
+                                                    Content="{DynamicResource Settings.AutoDetectSteam}"
+                                                    Command="{Binding DetectSteamCommand}"
+                                                    Style="{StaticResource SecondaryButton}"
+                                                    Margin="12,0,0,0" />
+                                        </Grid>
+                                        <TextBlock Text="{Binding SteamStatus}"
+                                                   Style="{StaticResource MutedText}"
+                                                   Margin="0,12,0,0" />
+                                    </StackPanel>
+                                </Border>
+
+                                <Grid Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Style="{StaticResource Card}" Margin="0,0,9,0">
+                                        <StackPanel>
+                                            <TextBlock Text="{DynamicResource Settings.ProtectionMode}" Style="{StaticResource CardTitle}" />
+                                            <TextBlock Text="{Binding ProtectionModeText}"
+                                                       Foreground="{StaticResource AccentStrongBrush}"
+                                                       FontSize="16"
+                                                       FontWeight="SemiBold"
+                                                       Margin="0,10,0,14" />
+                                            <UniformGrid Columns="3">
+                                                <Button Content="Soft"
+                                                        Command="{Binding SetProtectionModeCommand}"
+                                                        CommandParameter="Soft"
+                                                        Style="{StaticResource SecondaryButton}"
+                                                        Margin="0,0,6,0" />
+                                                <Button Content="Strict"
+                                                        Command="{Binding SetProtectionModeCommand}"
+                                                        CommandParameter="Strict"
+                                                        Style="{StaticResource SecondaryButton}"
+                                                        Margin="3,0,3,0" />
+                                                <Button Content="Lockdown"
+                                                        Command="{Binding SetProtectionModeCommand}"
+                                                        CommandParameter="Lockdown"
+                                                        Style="{StaticResource DangerButton}"
+                                                        Margin="6,0,0,0" />
+                                            </UniformGrid>
+                                            <CheckBox Content="{DynamicResource Settings.FocusMode}"
+                                                      IsChecked="{Binding FocusModeEnabled, Mode=TwoWay}"
+                                                      Margin="0,18,0,0" />
+                                            <CheckBox Content="{DynamicResource Settings.BlockSteamNetwork}"
+                                                      IsChecked="{Binding BlockSteamNetworkDuringRestrictedInstallations, Mode=TwoWay}" />
+                                            <CheckBox Content="{DynamicResource Settings.BlockInstalledLaunches}"
+                                                      IsChecked="{Binding BlockInstalledGameLaunchesEnabled, Mode=TwoWay}" />
+                                            <CheckBox Content="{DynamicResource Settings.KeepTray}"
+                                                      IsChecked="{Binding MinimizeToTrayOnClose, Mode=TwoWay}" />
+                                            <UniformGrid Columns="2" Margin="0,12,0,0">
+                                                <Button Content="{DynamicResource Settings.ResetPolicies}"
+                                                        Command="{Binding ResetWindowsPolicyCommand}"
+                                                        Style="{StaticResource SecondaryButton}"
+                                                        Margin="0,0,6,0" />
+                                                <Button Content="{DynamicResource Settings.ResetFirewall}"
+                                                        Command="{Binding ResetSteamFirewallCommand}"
+                                                        Style="{StaticResource SecondaryButton}"
+                                                        Margin="6,0,0,0" />
+                                            </UniformGrid>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="1" Style="{StaticResource Card}" Margin="9,0,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="{DynamicResource Settings.LanguageAndPassword}" Style="{StaticResource CardTitle}" />
+                                            <StackPanel Orientation="Horizontal" Margin="0,16,0,20">
+                                                <Button Content="{DynamicResource Lang.EnglishShort}"
+                                                        Command="{Binding SetLanguageCommand}"
+                                                        CommandParameter="en"
+                                                        Style="{StaticResource SecondaryButton}" />
+                                                <Button Content="{DynamicResource Lang.RussianShort}"
+                                                        Command="{Binding SetLanguageCommand}"
+                                                        CommandParameter="ru"
+                                                        Style="{StaticResource SecondaryButton}"
+                                                        Margin="10,0,0,0" />
+                                                <Button Content="{DynamicResource Lang.ChineseShort}"
+                                                        Command="{Binding SetLanguageCommand}"
+                                                        CommandParameter="zh-Hans"
+                                                        Style="{StaticResource SecondaryButton}"
+                                                        Margin="10,0,0,0" />
+                                            </StackPanel>
+                                            <TextBlock Text="{DynamicResource Settings.DisablePassword}" FontWeight="SemiBold" />
+                                            <TextBlock Text="{DynamicResource Settings.DisablePasswordText}"
+                                                       Style="{StaticResource MutedText}"
+                                                       Margin="0,6,0,12" />
+                                            <PasswordBox x:Name="DisablePasswordBox"
+                                                         PasswordChanged="DisablePasswordBox_OnPasswordChanged" />
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+
+                                <Border Style="{StaticResource Card}">
+                                    <StackPanel>
+                                        <TextBlock Text="{DynamicResource Settings.Restrictions}" Style="{StaticResource CardTitle}" />
+                                        <Grid Margin="0,16,0,18">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="170" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="{DynamicResource Field.AppId}"
+                                                           Style="{StaticResource TertiaryText}"
+                                                           Margin="0,0,0,6" />
+                                                <TextBox Text="{Binding NewAppId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         ToolTip="{DynamicResource ToolTip.AppId}" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                                <TextBlock Text="{DynamicResource Field.GameName}"
+                                                           Style="{StaticResource TertiaryText}"
+                                                           Margin="0,0,0,6" />
+                                                <TextBox Text="{Binding NewGameName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         ToolTip="{DynamicResource ToolTip.GameName}" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2" Margin="10,0,0,0">
+                                                <TextBlock Text="{DynamicResource Field.ExecutableName}"
+                                                           Style="{StaticResource TertiaryText}"
+                                                           Margin="0,0,0,6" />
+                                                <TextBox Text="{Binding NewExecutableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         ToolTip="{DynamicResource ToolTip.ExecutableName}" />
+                                            </StackPanel>
+                                            <Button Grid.Column="3"
+                                                    Content="{DynamicResource Settings.AddAppId}"
+                                                    Command="{Binding AddGameCommand}"
+                                                    Style="{StaticResource PrimaryButton}"
+                                                    Margin="10,22,0,0" />
+                                        </Grid>
+
+                                        <ItemsControl ItemsSource="{Binding Games}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#7016202C"
+                                                            BorderBrush="#22FFFFFF"
+                                                            BorderThickness="1"
+                                                            CornerRadius="16"
+                                                            Padding="16"
+                                                            Margin="0,0,0,10">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="190" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <StackPanel>
+                                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                                                <TextBlock Text="{Binding AppId, StringFormat=AppID: {0}}"
+                                                                           Style="{StaticResource MutedText}" />
+                                                            </StackPanel>
+                                                            <TextBox Grid.Column="1"
+                                                                     Text="{Binding ExecutableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                     ToolTip="{DynamicResource ToolTip.ExecutableName}" />
+                                                            <Button Grid.Column="2"
+                                                                    Content="{DynamicResource Common.Remove}"
+                                                                    Command="{Binding DataContext.RemoveGameCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                    CommandParameter="{Binding}"
+                                                                    Style="{StaticResource SecondaryButton}"
+                                                                    Margin="10,0,0,0" />
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                            <TextBlock Text="{DynamicResource Settings.MonitoringInterval}" VerticalAlignment="Center" />
+                                            <TextBox Text="{Binding CheckIntervalSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="76"
+                                                     Margin="14,0,8,0" />
+                                            <TextBlock Text="{DynamicResource Settings.Seconds}"
+                                                       Style="{StaticResource MutedText}"
+                                                       VerticalAlignment="Center" />
+                                            <Button Content="{DynamicResource Common.Save}"
+                                                    Command="{Binding SaveSettingsCommand}"
+                                                    Style="{StaticResource PrimaryButton}"
+                                                    Margin="20,0,0,0" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid" BasedOn="{StaticResource PagePanel}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsActivitySelected}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,24">
+                                    <StackPanel DockPanel.Dock="Left">
+                                        <TextBlock Text="{DynamicResource Nav.Activity}" Style="{StaticResource SectionTitle}" />
+                                        <TextBlock Text="{DynamicResource Logs.Subtitle}"
+                                                   Style="{StaticResource MutedText}"
+                                                   Margin="0,8,0,0" />
+                                    </StackPanel>
+                                    <TextBox DockPanel.Dock="Right"
+                                             Width="320"
+                                             Text="{Binding LogSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             ToolTip="{DynamicResource ToolTip.SearchLogs}" />
+                                </DockPanel>
+
+                                <Border Style="{StaticResource Card}">
+                                    <ListBox ItemsSource="{Binding FilteredActivityLog}"
+                                             PreviewMouseWheel="ScrollableContent_OnPreviewMouseWheel"
+                                             ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="#6016202C"
+                                                        BorderBrush="#20FFFFFF"
+                                                        BorderThickness="1"
+                                                        CornerRadius="16"
+                                                        Padding="16"
+                                                        Margin="0,0,0,10">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="48" />
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="150" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Border Width="34"
+                                                                Height="34"
+                                                                CornerRadius="17"
+                                                                Background="#2279E85F">
+                                                            <TextBlock Text="&#xE81C;"
+                                                                       Style="{StaticResource IconText}"
+                                                                       Foreground="{StaticResource AccentStrongBrush}"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center" />
+                                                        </Border>
+                                                        <StackPanel Grid.Column="1">
+                                                            <TextBlock Text="{Binding Message}" FontWeight="SemiBold" />
+                                                            <TextBlock Text="{DynamicResource Logs.ActivityEvent}"
+                                                                       Style="{StaticResource TertiaryText}" />
+                                                        </StackPanel>
+                                                        <TextBlock Grid.Column="2"
+                                                                   Text="{Binding Timestamp, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"
+                                                                   Style="{StaticResource MutedText}"
+                                                                   HorizontalAlignment="Right"
+                                                                   VerticalAlignment="Center" />
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <Border Grid.Column="2"
+                        Background="#5507111F"
+                        Padding="0,30,22,24">
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                        <StackPanel>
+                            <Border Background="#8B16202C"
+                                    BorderBrush="#25FFFFFF"
+                                    BorderThickness="1"
+                                    CornerRadius="21"
+                                    Padding="16,12"
+                                    HorizontalAlignment="Right"
+                                    Margin="0,0,0,24">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE83D;"
+                                               Style="{StaticResource IconText}"
+                                               Foreground="{StaticResource AccentStrongBrush}"
+                                               Margin="0,0,10,0" />
+                                    <TextBlock Text="{Binding SessionPillText}"
+                                               Foreground="{StaticResource MutedTextBrush}"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,14,0" />
+                                    <TextBlock Text="{Binding FocusSessionElapsedText}"
+                                               Foreground="{StaticResource AccentStrongBrush}"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+                                <StackPanel>
+                                    <DockPanel Margin="0,0,0,18">
+                                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                            <TextBlock Text="&#xE9D2;"
+                                                       Style="{StaticResource IconText}"
+                                                       Margin="0,0,10,0" />
+                                            <TextBlock Text="{DynamicResource Right.Progress}" Style="{StaticResource CardTitle}" />
+                                        </StackPanel>
+                                        <Polyline Points="0,24 20,24 28,16 42,16 52,8 66,8"
+                                                  Stroke="{StaticResource AccentStrongBrush}"
+                                                  StrokeThickness="1.5"
+                                                  DockPanel.Dock="Right"
+                                                  Width="70"
+                                                  Height="30" />
+                                    </DockPanel>
+
+                                    <Border Background="#661C2634" CornerRadius="16" Padding="14" Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="46" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border Width="34" Height="34" CornerRadius="17" Background="#2479E85F">
+                                                <TextBlock Text="&#xE823;"
+                                                           Style="{StaticResource IconText}"
+                                                           Foreground="{StaticResource AccentStrongBrush}"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" />
+                                            </Border>
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="{Binding FocusSessionElapsedText}" Style="{StaticResource MetricValue}" />
+                                                <TextBlock Text="{DynamicResource Right.CurrentFocusSession}" Style="{StaticResource MutedText}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Background="#661C2634" CornerRadius="16" Padding="14" Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="46" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border Width="34" Height="34" CornerRadius="17" Background="#2466A8FF">
+                                                <TextBlock Text="&#xE7FC;"
+                                                           Style="{StaticResource IconText}"
+                                                           Foreground="{StaticResource BlueAccentBrush}"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" />
+                                            </Border>
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="{Binding RestrictedCount}" Style="{StaticResource MetricValue}" />
+                                                <TextBlock Text="{DynamicResource Right.RestrictedGamesCount}" Style="{StaticResource MutedText}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Background="#661C2634" CornerRadius="16" Padding="14">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="46" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border Width="34" Height="34" CornerRadius="17" Background="#24F8B84E">
+                                                <TextBlock Text="&#xE814;"
+                                                           Style="{StaticResource IconText}"
+                                                           Foreground="{StaticResource WarningBrush}"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" />
+                                            </Border>
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="{Binding BlockedAttemptsCount}" Style="{StaticResource MetricValue}" />
+                                                <TextBlock Text="{DynamicResource Right.BlockAttemptsSession}" Style="{StaticResource MutedText}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                        <TextBlock Text="&#xE945;"
+                                                   Style="{StaticResource IconText}"
+                                                   Foreground="{StaticResource WarningBrush}"
+                                                   Margin="0,0,10,0" />
+                                        <TextBlock Text="{DynamicResource Right.QuickActions}" Style="{StaticResource CardTitle}" />
+                                    </StackPanel>
+
+                                    <Button Command="{Binding SelectSettingsCommand}"
+                                            Style="{StaticResource GhostButton}"
+                                            HorizontalContentAlignment="Stretch"
+                                            Margin="0,0,0,8">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="24" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="&#xE769;"
+                                                       Style="{StaticResource IconText}"
+                                                       Foreground="{StaticResource WarningBrush}" />
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="{Binding QuickPauseActionText}" FontWeight="SemiBold" />
+                                                <TextBlock Text="{Binding QuickPauseActionSubText}" Style="{StaticResource MutedText}" />
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="2" Text="›" FontSize="26" Foreground="{StaticResource MutedTextBrush}" />
+                                        </Grid>
+                                    </Button>
+
+                                    <Button Command="{Binding SetProtectionModeCommand}"
+                                            CommandParameter="Lockdown"
+                                            Style="{StaticResource GhostButton}"
+                                            HorizontalContentAlignment="Stretch"
+                                            Margin="0,0,0,8">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="24" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="&#xE72E;"
+                                                       Style="{StaticResource IconText}"
+                                                       Foreground="#FF8C8C" />
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="{DynamicResource Right.StrictMode}" FontWeight="SemiBold" />
+                                                <TextBlock Text="{DynamicResource Right.StrictModeSub}" Style="{StaticResource MutedText}" />
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="2" Text="›" FontSize="26" Foreground="{StaticResource MutedTextBrush}" />
+                                        </Grid>
+                                    </Button>
+
+                                    <Button Command="{Binding SelectSettingsCommand}"
+                                            Style="{StaticResource GhostButton}"
+                                            HorizontalContentAlignment="Stretch">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="24" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="&#xE710;"
+                                                       Style="{StaticResource IconText}"
+                                                       Foreground="{StaticResource BlueAccentBrush}" />
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="{DynamicResource Right.AddException}" FontWeight="SemiBold" />
+                                                <TextBlock Text="{DynamicResource Right.AddExceptionSub}" Style="{StaticResource MutedText}" />
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="2" Text="›" FontSize="26" Foreground="{StaticResource MutedTextBrush}" />
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Text="“"
+                                               Foreground="{StaticResource AccentStrongBrush}"
+                                               FontSize="34"
+                                               FontWeight="Bold" />
+                                    <TextBlock Text="{DynamicResource Right.Reminder}" Style="{StaticResource CardTitle}" Margin="0,-4,0,16" />
+                                    <Border BorderBrush="#30FFFFFF" BorderThickness="2,0,0,0" Padding="16,0,0,0">
+                                        <TextBlock Text="{DynamicResource Right.ReminderText}"
+                                                   Style="{StaticResource MutedText}"
+                                                   FontSize="15"
+                                                   TextWrapping="Wrap"
+                                                   LineHeight="22" />
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <Border Background="#B007111F">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Border Width="380"
+                    Style="{StaticResource Card}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="{Binding BusyText}"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,16" />
+                    <ProgressBar IsIndeterminate="True" />
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
+</Window>

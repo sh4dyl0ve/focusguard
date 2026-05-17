@@ -1,0 +1,18 @@
+.DS_Store
+
+# Build outputs
+bin/
+obj/
+artifacts/
+
+# User-local IDE state
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+# Logs and local settings
+*.log
+settings.json
+settings.corrupt.*.json
