@@ -1,0 +1,71 @@
+name: Build and publish release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build FocusGuard v1.0.0
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Run smoke tests
+        shell: pwsh
+        run: dotnet run --project .\FocusGuard.Tests\FocusGuard.Tests.csproj -c Release
+
+      - name: Build solution
+        shell: pwsh
+        run: dotnet build .\FocusGuard.sln -c Release -m:1 --no-restore
+
+      - name: Publish self-contained Windows build
+        shell: pwsh
+        run: >-
+          dotnet publish .\FocusGuard\FocusGuard.csproj
+          -c Release
+          -r win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:PublishReadyToRun=false
+          -o .\artifacts\FocusGuard-win-x64
+
+      - name: Package release asset
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path .\artifacts | Out-Null
+          Compress-Archive -Path .\artifacts\FocusGuard-win-x64\FocusGuard.exe, .\artifacts\FocusGuard-win-x64\FocusGuard.pdb -DestinationPath .\artifacts\FocusGuard-win-x64.zip -Force
+          Get-FileHash .\artifacts\FocusGuard-win-x64\FocusGuard.exe -Algorithm SHA256 | ForEach-Object { "FocusGuard.exe  $($_.Hash.ToLowerInvariant())" } | Set-Content .\artifacts\checksums.txt
+          Get-FileHash .\artifacts\FocusGuard-win-x64.zip -Algorithm SHA256 | ForEach-Object { "FocusGuard-win-x64.zip  $($_.Hash.ToLowerInvariant())" } | Add-Content .\artifacts\checksums.txt
+
+      - name: Create GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "v1.0.0"
+          if (gh release view $tag --repo $env:GITHUB_REPOSITORY 2>$null) {
+            gh release delete $tag --repo $env:GITHUB_REPOSITORY --yes --cleanup-tag
+          }
+
+          gh release create $tag `
+            .\artifacts\FocusGuard-win-x64.zip `
+            .\artifacts\checksums.txt `
+            --repo $env:GITHUB_REPOSITORY `
+            --target $env:GITHUB_SHA `
+            --title "FocusGuard v1.0.0" `
+            --notes-file .\RELEASE_NOTES.md `
+            --latest
