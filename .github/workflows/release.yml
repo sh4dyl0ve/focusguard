@@ -29,7 +29,7 @@ jobs:
 
       - name: Build solution
         shell: pwsh
-        run: dotnet build .\FocusGuard.sln -c Release -m:1 --no-restore
+        run: dotnet build .\FocusGuard.sln -c Release -m:1
 
       - name: Publish self-contained Windows build
         shell: pwsh
