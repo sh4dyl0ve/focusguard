@@ -21,3 +21,5 @@ Use the `FocusGuard-win-x64.zip` asset attached to this release.
 ## Notes
 
 Some protection features require administrator permissions on Windows because they use Windows Firewall or Windows launch policy APIs.
+
+Built from the public `main` branch.
